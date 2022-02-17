@@ -6,7 +6,7 @@
 ```
 git clone git@github.com:beezwax/recruiting-widget-creator.git
 cd recruiting-widget-creator
-rm .git
+rm -rf .git
 git init
 git add .
 git commit -m 'First commit'
