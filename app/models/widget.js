@@ -3,11 +3,16 @@ import FileDb from '../file-db.js';
 const db = new FileDb('widget-data.json');
 
 export default class Widget {
-  constructor({ id = null, name = null, purpose = null, active = false }) {
-    this.id = id;
-    this.name = name;
-    this.purpose = purpose;
+  constructor({ id, name, purpose, active } = {}) {
+    this.id = Number(id) || null;
+    this.name = name || '';
+    this.purpose = purpose || '';
     this.active = ['true', true].includes(active);
+    this.errors = {
+      active: [],
+      name: [],
+      purpose: [],
+    };
   }
 
   static find(id) {
@@ -19,8 +24,19 @@ export default class Widget {
     return new Widget(record);
   }
 
+  static findAll() {
+    const records = db.read();
+    return records.map(r => new Widget(r));
+  }
+
+  update(values) {
+    const { name, purpose, active } = new Widget(values);
+    Object.assign(this, { name, purpose, active });
+  }
+
   save() {
     const records = db.read();
+
     if (!this.id) {
       const highestId = Math.max(...records.map(r => r.id).concat(0));
       this.id = highestId + 1;
@@ -34,5 +50,16 @@ export default class Widget {
     }
 
     db.write(records);
+
+    return true;
+  }
+
+  toJSON() {
+    return {
+      id: this.id,
+      name: this.name,
+      purpose: this.purpose,
+      active: this.active,
+    }
   }
 }
