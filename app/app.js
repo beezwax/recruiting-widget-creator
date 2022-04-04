@@ -6,8 +6,6 @@ const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(path.resolve(), 'public')));
 
-app.get('/favicon.ico', (req, res) => res.status(204));
-
 app.get('/', widgetController.index);
 app.post('/', widgetController.create);
 app.get('/new', widgetController.new);
