@@ -21,6 +21,7 @@
   "nodemonConfig": {
     "ext": "js",
     "ignore": [
+      "public/*",
       "widget-data.json"
     ],
     "verbose": false

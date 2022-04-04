@@ -11,7 +11,6 @@ export default function listPage({ widgets }) {
         <th>Purpose</th>
         <th>Active</th>
         <th></th>
-        <th></th>
       </tr>
     </thead>
    ${widgets.map(widget => `

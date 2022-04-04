@@ -6,16 +6,27 @@ export default class FileDb {
     this.filePath = join(process.env.INIT_CWD, filename);
   }
 
-  read() {
-    try {
-      const rawData = fs.readFileSync(this.filePath);
-      return JSON.parse(rawData || '[]');
-    } catch (err) {
-      return [];
-    }
+  async read() {
+    return new Promise(resolve => {
+      fs.readFile(this.filePath, (err, rawData) => {
+        try {
+          resolve(JSON.parse(rawData || '[]'));
+        } catch (err) {
+          resolve([]);
+        }
+      });
+    });
   }
 
-  write(data) {
-    return fs.writeFileSync(this.filePath, JSON.stringify(data));
+  async write(data) {
+    return new Promise((resolve, reject) => {
+      fs.writeFile(this.filePath, JSON.stringify(data), err => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve();
+        }
+      });
+    });
   }
 }
